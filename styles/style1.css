@@ -1,0 +1,55 @@
+/*page background colour and default text colour*/
+html {
+    background-color: #222222;
+    color: #EEEEEE;
+}
+
+
+/*copyright message at bottom*/
+footer {
+    margin-top: 10px;
+    border-top: 1px solid #DDDDDD;
+}
+
+/*The canvas with game drown to it*/
+#gameCanvas {
+    width: 640px;
+    height: 480px;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    border: 1px solid black;
+    background-color: #EEEEEE;
+}
+
+/*The ship icon at top of page*/
+#player {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    margin-left: 50px;
+
+    animation-name: topShip;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+}
+
+/*top of page with logo and title*/
+.head {
+    border-bottom: 2px solid white;
+    margin-bottom: 10px;
+}
+
+/*Animation of ship icon at top of page*/
+@keyframes topShip {
+    0% {margin-left: 0px;}
+    50% {
+        margin-left: 200px;
+
+        /*Rotation*/
+        -ms-transform: rotateZ(180deg);
+        -webkit-transform: rotateZ(180deg);
+        transform: rotateZ(180deg);
+    }
+    100% {margin-left: 0px;}
+}

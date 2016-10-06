@@ -1,0 +1,41 @@
+<html>
+    <!--setup-->
+    <head>
+        <!--link the style sheet-->
+        <link rel="stylesheet" type="text/css" href="styles/style1.css"/>
+        <!--set the title of tab-->
+        <title>Astroid Destroyer</title>
+        <!--page icon-->
+        <link rel="icon" href="images/player.png"/>
+    </head>
+
+    <!--main content-->
+    <body onkeydown="">
+        <!--visible title at the top, with animated ship-->
+        <div class="head">
+            <!--title-->
+            <h1 style="display: inline-block;">Astroid Destroyer</h1>
+            <!--ship-->
+            <img id="player" src="images/player.png" alt="Logo"/>
+        </div>
+
+        <!--main game canvas-->
+        <canvas id="gameCanvas" width="640" height="480">
+        </canvas>
+
+        <!--including the supporting frameworks/APIs-->
+        <script src="scripts/keyCodes.js"></script>
+        <script src="scripts/pokeyDebugTools.js"></script>
+        <script src="scripts/mathHelper.js"></script>
+
+        <!--including the main game scripts-->
+        <script src="scripts/game.js"></script>
+    </body>
+
+    <!--just a copyright notice-->
+    <footer>
+        <p>
+            &copy; Mateo Carreras 2016. Inspired by an older game called Astroids.
+        </p>
+    </footer>
+</html>
