@@ -20,7 +20,7 @@ var game = {
         alpha: 1.0, //For fade in and out
         fadingOut: false, //For calculations on wether to subtract or add to fade
         currentState: 0, //Keep track of what intro it's on
-        messages: ["PokeyOne", "Astroid\nDestroyer"]
+        messages: ["PokeyOne", "Asteroid\nDestroyer"]
     },
     //Player data for rotation, time since last shot, and current bullets in the
     //air.
