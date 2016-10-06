@@ -8,6 +8,9 @@ asteroids that are coming at you. This is like a remake but adding more.
 ## How to run
 Just open __index.html__ in any browser to play the game. Most modern browsers should work, but mostly tested in Google Chrome.
 
+### How to play
+The game is simple. Just use the arrow keys for spinning, and space bar for shooting. The objective is to simply kill as many asteroids before they kill you.
+
 ## Committing
 If you want to commit to the project, just send a pull request and I will look it over. Please keep it respectful. Don't submit
 requests that just change formatting of the code.
