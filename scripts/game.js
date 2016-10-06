@@ -105,13 +105,17 @@ game.tick = function(){
                     var ratio = [Math.floor(per * 100), 100-Math.floor(per * 100)];
                     var gcf = getGCF(ratio[0], ratio[1]);
                     ratio[0] = ratio[0]/gcf;
-                    ratio[1] = (ratio[1]/gcf) * (0-1);
+                    ratio[1] = ratio[1]/gcf;
 
+                    debug("lowering " + ratio[0] + " " + ratio[1]);
                     if(ratio[0] + ratio[1] > 3){
                         var bothDiv = (ratio[0] + ratio[1])/3;
                         ratio[0] /= bothDiv;
                         ratio[1] /= bothDiv;
                     }
+                    debug("to " + ratio[0] + " " + ratio[1]);
+
+                    ratio[1] -= ratio[1]*2;
 
                     bulletData.speed.x = ratio[0];
                     bulletData.speed.y = ratio[1];

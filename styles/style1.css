@@ -2,8 +2,8 @@
 html {
     background-color: #222222;
     color: #EEEEEE;
+    font-family: sans-serif;
 }
-
 
 /*copyright message at bottom*/
 footer {
@@ -37,6 +37,24 @@ footer {
 /*top of page with logo and title*/
 .head {
     border-bottom: 2px solid white;
+    margin-bottom: 10px;
+}
+
+/*Note at the top of the page*/
+.note {
+    color: #000000;
+    width: 600px;
+    border-left: 5px solid #BBBBBB;
+    background-color: #DDDDDD;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+    padding: 10px;
+}
+
+/*The title of a note*/
+.noteHead {
+    border-bottom: 2px solid #BBBBBB;
     margin-bottom: 10px;
 }
 
