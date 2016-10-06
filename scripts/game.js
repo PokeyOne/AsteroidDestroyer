@@ -121,7 +121,7 @@ game.tick = function(){
                     bulletData.speed.y = ratio[1];
                 }else if(rot <= 3.1415){
                     var per = (rot-1.5708)/1.5708;
-                    var ratio = [Math.floor(per * 100), 100-Math.floor(per * 100)];
+                    var ratio = [100-Math.floor(per * 100), Math.floor(per * 100)];
                     var gcf = getGCF(ratio[0], ratio[1]);
                     ratio[0] = ratio[0]/gcf;
                     ratio[1] = (ratio[1]/gcf);
@@ -205,6 +205,9 @@ game.render = function(){
                 game.ctx.restore(); //Just bringing it back to normal
             }
 
+            //Render Debug
+            renderGameDebug(game.ctx, game.player);
+
               //----------------//
              //---Render-GUI---//
             //----------------//
@@ -253,6 +256,13 @@ function keyUp(event){
             break;
         case 32://space bar
             game.keyDown.space = false;
+            break;
+        case 72://h
+            if(hitBoxesShown){
+                hitBoxesShown = false;
+            }else{
+                hitBoxesShown = true;
+            }
             break;
         default:
             break;
