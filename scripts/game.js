@@ -4,13 +4,6 @@
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 //Copyright (c) Mateo Carreras 2016
 
-
-
-//state ids
-var LOGO_STATE_ID = 0; //id of logo intro page
-var GAME_STATE_ID = 1; //id of game state
-var CRED_STATE_ID = 2; //id of credits state
-
 //holds general information about things in the game
 var game = {
     //Keep track of state for knowing what to render
@@ -34,7 +27,9 @@ var game = {
         left: false,
         right: false,
         space: false
-    }
+    },
+    //Holds all the information about the asteroids
+    asteroids: []
 }
 
 //general change of things before every render
@@ -80,9 +75,23 @@ game.tick = function(){
 
             //Bullets aren't bullets if they don't move!
             if(game.player.bullets.length > 0){
+                //Go through every bullet
                 for(i = 0; i <  game.player.bullets.length; i++){
+                    //Move the bullet at the set speed
                     game.player.bullets[i].x += game.player.bullets[i].speed.x;
                     game.player.bullets[i].y += game.player.bullets[i].speed.y;
+
+                    //Getting location for easier access
+                    var x = game.player.bullets[i].x;
+                    var y = game.player.bullets[i].y;
+
+                    //Detect if bullet is out of bounds
+                    if(x > 640 || x < 0 || y > 480 || y < 0){
+                        //Remove the bullet when out of screen
+                        debug("removed a bullet at index " + i + " and location " +
+                            x + " " + y);
+                        game.player.bullets.splice(i, 1);
+                    }
                 }
             }
 
@@ -94,12 +103,11 @@ game.tick = function(){
                 var bulletData = {
                     x: 320,
                     y: 240,
-                    speed: {
-                        x: 0,
-                        y: 0
-                    },
+                    speed: dirSpd(rot, BULLET_SPEED),
                     dir: rot
                 }
+
+                /*
                 if(rot <= 1.5708){
                     var per = rot/1.5708;
                     var ratio = [Math.floor(per * 100), 100-Math.floor(per * 100)];
@@ -107,13 +115,11 @@ game.tick = function(){
                     ratio[0] = ratio[0]/gcf;
                     ratio[1] = ratio[1]/gcf;
 
-                    debug("lowering " + ratio[0] + " " + ratio[1]);
                     if(ratio[0] + ratio[1] > 3){
                         var bothDiv = (ratio[0] + ratio[1])/3;
                         ratio[0] /= bothDiv;
                         ratio[1] /= bothDiv;
                     }
-                    debug("to " + ratio[0] + " " + ratio[1]);
 
                     ratio[1] -= ratio[1]*2;
 
@@ -125,9 +131,52 @@ game.tick = function(){
                     var gcf = getGCF(ratio[0], ratio[1]);
                     ratio[0] = ratio[0]/gcf;
                     ratio[1] = (ratio[1]/gcf);
+
+                    if(ratio[0] + ratio[1] > 3){
+                        var bothDiv = (ratio[0] + ratio[1])/3;
+                        ratio[0] /= bothDiv;
+                        ratio[1] /= bothDiv;
+                    }
+
+                    bulletData.speed.x = ratio[0];
+                    bulletData.speed.y = ratio[1];
+                }else if(rot <= 4.712){
+                    var per = (rot-3.1415)/1.5708;
+                    var ratio = [Math.floor(per * 100), 100-Math.floor(per * 100)];
+                    var gcf = getGCF(ratio[0], ratio[1]);
+                    ratio[0] = ratio[0]/gcf;
+                    ratio[1] = (ratio[1]/gcf);
+
+                    if(ratio[0] + ratio[1] > 3){
+                        var bothDiv = (ratio[0] + ratio[1])/3;
+                        ratio[0] /= bothDiv;
+                        ratio[1] /= bothDiv;
+                    }
+
+                    ratio[0] -= ratio[0]*2
+
+                    bulletData.speed.x = ratio[0];
+                    bulletData.speed.y = ratio[1];
+                }else{
+                    var per = (rot-4.712)/1.5708;
+                    var ratio = [100-Math.floor(per * 100), Math.floor(per * 100)];
+                    var gcf = getGCF(ratio[0], ratio[1]);
+                    ratio[0] = ratio[0]/gcf;
+                    ratio[1] = (ratio[1]/gcf);
+
+                    if(ratio[0] + ratio[1] > 3){
+                        var bothDiv = (ratio[0] + ratio[1])/3;
+                        ratio[0] /= bothDiv;
+                        ratio[1] /= bothDiv;
+                    }
+
+                    ratio[0] -= ratio[0]*2
+                    ratio[1] -= ratio[1]*2
+
                     bulletData.speed.x = ratio[0];
                     bulletData.speed.y = ratio[1];
                 }
+                */
 
                 game.player.bullets.push(bulletData);
                 game.player.shotCooldown = 50;

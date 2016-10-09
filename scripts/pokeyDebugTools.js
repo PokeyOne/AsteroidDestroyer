@@ -1,4 +1,4 @@
-var isDebug = false;
+var isDebug = true;
 var hitBoxesShown = false;
 
 //A way to log message only when debuging
