@@ -8,6 +8,7 @@ var radians = {
 
 //The Euclidean Algorithm
 function getGCF(numberA, numberB){
+    //Shorter names
     var a = numberA;
     var b = numberB;
 
@@ -92,6 +93,11 @@ function dirSpd(rad, speed){
     }
 
     return {x: ratio[0], y: ratio[1]};
+}
+
+//Random radian
+function randomRadian(){
+    return Math.random() * radians.up;
 }
 
 //True if a is inbetween b and c (both exclusive)

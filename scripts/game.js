@@ -29,7 +29,9 @@ var game = {
         space: false
     },
     //Holds all the information about the asteroids
-    asteroids: []
+    asteroids: [],
+    timeTillNextAsteroid: 0,
+    asteroidsSpawned: 0
 }
 
 //general change of things before every render
@@ -111,11 +113,17 @@ game.tick = function(){
                 game.player.shotCooldown = 50;
             }
 
-            //Bullet movement
-            if(game.player.bullets.length > 0){
-                for(i = 0; i < game.player.bullets.length; i++){
-
+            //Asteroid spawning
+            if(game.timeTillNextAsteroid <= 0){
+                spawnAsteroid();
+                game.asteroidsSpawned++;
+                if(game.asteroidsSpawned < 30){
+                    game.timeTillNextAsteroid = (2/(game.asteroidsSpawned + 10)/10)*10000;
+                }else{
+                    game.timeTillNextAsteroid = 50;
                 }
+            }else{
+                game.timeTillNextAsteroid--;
             }
 
             break;

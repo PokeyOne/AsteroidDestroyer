@@ -1,3 +1,3 @@
-function spawnAstroid {
-    
+function spawnAsteroid() {
+    debug("Spawning asteroid");
 }
