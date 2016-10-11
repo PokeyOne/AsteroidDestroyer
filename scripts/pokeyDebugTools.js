@@ -21,6 +21,21 @@ function renderGameDebug(ctx, player){
             ctx.strokeRect(0-25, 0-25, 50, 50);
 
             ctx.restore();
+
+            //Asteroid hit boxes
+            for(i = 0; i < game.asteroids.length; i++){
+                ctx.save();
+
+                var astro = game.asteroids[i];
+
+                ctx.translate(astro.x, astro.y);
+                ctx.rotate(astro.rad);
+
+                ctx.strokeStyle = "#FE38AB";
+                ctx.strokeRect(0 - astro.size/2, 0 - astro.size/2, astro.size, astro.size);
+
+                ctx.restore();
+            }
         }
     }
 }

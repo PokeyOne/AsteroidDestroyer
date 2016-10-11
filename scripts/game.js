@@ -126,6 +126,17 @@ game.tick = function(){
                 game.timeTillNextAsteroid--;
             }
 
+            //What good are asteroids without movement, eh!
+            if(game.asteroids.length > 0){
+                for(i = 0; i < game.asteroids.length; i++){
+                    game.asteroids[i].x += game.asteroids[i].speed.x;
+                    game.asteroids[i].y += game.asteroids[i].speed.y;
+
+                    //Make sure there ain't no run away's, eh
+
+                }
+            }
+
             break;
         default:
             debug("Invalid state"); //if the currentState is unhandled
@@ -270,6 +281,13 @@ function init(){
 
     //player setup
     game.player.image = document.getElementById("player");
+
+    //sound setup
+    game.sound = new Howl({
+        src: ["sound/music.mp3"],
+        loop: true
+    });
+    game.sound.play();
 }
 
 //stops the game loop
