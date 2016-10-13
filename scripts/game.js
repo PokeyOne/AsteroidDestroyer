@@ -131,21 +131,20 @@ game.tick = function(){
                 for(i = 0; i < game.asteroids.length; i++){
                     game.asteroids[i].x += game.asteroids[i].speed.x;
                     game.asteroids[i].y += game.asteroids[i].speed.y;
-		    
-		    //Add lifeTime
-		    game.asteroids[i].lifeTime++;
 
-		    //Easier access
-		    var x = game.asteroids[i].x;
-		    var y = game.asteroids[i].y;
+        		    //Add lifeTime
+        		    game.asteroids[i].lifeTime++;
+
+        		    //Easier access
+        		    var x = game.asteroids[i].x;
+        		    var y = game.asteroids[i].y;
 
                     //Make sure there ain't no run away's, eh
-		    if(game.asteroids[i].lifeTime > 1000 && offScreen(x, y)){
-			
-		    }
+        		    if(game.asteroids[i].lifeTime > 1000 && offScreen(x, y)){
+                        game.asteroids.splice(i, 1);
+                    }
                 }
             }
-
             break;
         default:
             debug("Invalid state"); //if the currentState is unhandled
@@ -272,6 +271,15 @@ function keyUp(event){
             break;
         default:
             break;
+    }
+}
+
+//Check if something is off the screen
+function offScreen(x, y){
+    if(x < 0 || x > 640 || y < 0 || y > 480){
+        return true;
+    }else{
+        return false;
     }
 }
 

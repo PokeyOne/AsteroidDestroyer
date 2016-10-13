@@ -6,7 +6,7 @@ function spawnAsteroid() {
         speed: dirSpd(angle, 3),
         rad: angle,
         size: Math.random() * 50,
-	lifeTime: 0
+        lifeTime: 0
     }
 
     debug("Spawning asteroid");
