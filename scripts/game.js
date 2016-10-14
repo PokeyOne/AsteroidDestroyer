@@ -61,7 +61,7 @@ game.tick = function(){
         case GAME_STATE_ID:
             //Spin clock-wise when right key is pressed
             if(game.keyDown.right){
-                game.player.rotation += 0.02;
+                game.player.rotation += 0.04;
                 if(game.player.rotation > 6.28319){
                     game.player.rotation = 0;
                 }
@@ -69,7 +69,7 @@ game.tick = function(){
 
             //Spin counter clock-wise when left key pressed
             if(game.keyDown.left){
-                game.player.rotation -= 0.02;
+                game.player.rotation -= 0.04;
                 if(game.player.rotation < 0){
                     game.player.rotation = 6.28319;
                 }
@@ -111,6 +111,7 @@ game.tick = function(){
 
                 game.player.bullets.push(bulletData);
                 game.player.shotCooldown = 50;
+                game.player.sound.shoot.play();
             }
 
             //Asteroid spawning
@@ -140,7 +141,7 @@ game.tick = function(){
         		    var y = game.asteroids[i].y;
 
                     //Make sure there ain't no run away's, eh
-        		    if(game.asteroids[i].lifeTime > 1000 && offScreen(x, y)){
+        		    if(game.asteroids[i].lifeTime > 200 && offScreen(x, y)){
                         game.asteroids.splice(i, 1);
                     }
                 }
@@ -149,9 +150,6 @@ game.tick = function(){
         default:
             debug("Invalid state"); //if the currentState is unhandled
     }
-
-    //Well, we want to see something on the screen, don't we?
-    game.render();
 }
 
 //render all objects to the game canvas
@@ -243,8 +241,6 @@ function keyDown(event){
             game.keyDown.space = true;
             break;
         default:
-            debug("Unhandled key code " + event.keyCode + " which I believe is " +
-                getKeyCodeName(event.keyCode));
     }
 }
 
@@ -295,16 +291,27 @@ function init(){
     game.canvas = document.getElementById("gameCanvas"); //Get the canvas object
     game.ctx = game.canvas.getContext("2d"); //Get the drawing context of canvas
     game.loop = setInterval(game.tick, 10); //Start main game loop
+    game.renderLoop = setInterval(game.render, 35); //Start main render loop
 
     //player setup
     game.player.image = document.getElementById("player");
 
     //sound setup
+    /*
     game.sound = new Howl({
         src: ["sound/music.mp3"],
         loop: true
     });
     game.sound.play();
+    */
+
+    game.player.sound.shoot = new Howl({
+        src: ["sound/Shoot.wav"]
+    });
+
+    game.player.sound.kill = new Howl({
+        src: ["sound/boom.wav"]
+    });
 }
 
 //stops the game loop
