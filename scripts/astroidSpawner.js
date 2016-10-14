@@ -1,4 +1,4 @@
-function spawnAsteroid() {
+function spawnAsteroid(isWorker) {
     var angle = randomRadian();
     var asteroid = {
         x: dirSpd(angle, 3).x * -1000,
@@ -11,5 +11,9 @@ function spawnAsteroid() {
 
     debug("Spawning asteroid");
 
-    game.asteroids.push(asteroid);
+    if(isWorker){
+        return asteroid;
+    }else{
+        game.asteroids.push(asteroid);
+    }
 }

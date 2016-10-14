@@ -20,7 +20,11 @@ var game = {
     player: {
         rotation: 0.1, //Current rotation in radians
         shotCooldown: 10, //A cool down timer for how often player can shoot
-        bullets: [] //An array that holds all the information of bullets in air
+        bullets: [], //An array that holds all the information of bullets in air
+        sound: {
+            shoot: 0,
+            kill: 0
+        }
     },
     //Just keeps tabs on what keys are currently pressed
     keyDown: {
@@ -116,13 +120,15 @@ game.tick = function(){
 
             //Asteroid spawning
             if(game.timeTillNextAsteroid <= 0){
-                spawnAsteroid();
-                game.asteroidsSpawned++;
-                if(game.asteroidsSpawned < 30){
-                    game.timeTillNextAsteroid = (2/(game.asteroidsSpawned + 10)/10)*10000;
-                }else{
+                //spawnAsteroid();
+                console.log("OMG");
+                game.worker.postMessage("spawnAsteroid");
+                //game.asteroidsSpawned++;
+                //if(game.asteroidsSpawned < 30){
+                    //game.timeTillNextAsteroid = (2/(game.asteroidsSpawned + 10)/10)*10000;
+                //}else{
                     game.timeTillNextAsteroid = 50;
-                }
+                //}
             }else{
                 game.timeTillNextAsteroid--;
             }
@@ -291,7 +297,12 @@ function init(){
     game.canvas = document.getElementById("gameCanvas"); //Get the canvas object
     game.ctx = game.canvas.getContext("2d"); //Get the drawing context of canvas
     game.loop = setInterval(game.tick, 10); //Start main game loop
-    game.renderLoop = setInterval(game.render, 35); //Start main render loop
+    game.renderLoop = setInterval(game.render, 10); //Start main render loop
+
+    //Worker setup
+    if(window.Worker){
+        game.worker = new Worker("scripts/tickWorker.js");
+    }
 
     //player setup
     game.player.image = document.getElementById("player");
@@ -304,6 +315,17 @@ function init(){
     });
     game.sound.play();
     */
+    game.sounds = {
+        tutorial: new Howl({
+            src: ["sound/tutorial.wav"]
+        }),
+        intro: new Howl({
+            src: ["sound/intro.wav"],
+            onend: function(){
+                game.sounds.tutorial.play();
+            }
+        })
+    }
 
     game.player.sound.shoot = new Howl({
         src: ["sound/Shoot.wav"]
@@ -312,6 +334,8 @@ function init(){
     game.player.sound.kill = new Howl({
         src: ["sound/boom.wav"]
     });
+
+    setTimeout(game.sounds.intro.play(), 1000);
 }
 
 //stops the game loop
@@ -319,5 +343,5 @@ function stopGame(){
     clearInterval(game.loop);
 }
 
-//call the init function
-init();
+//Call the init function on window load
+$(init());
