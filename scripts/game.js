@@ -33,9 +33,7 @@ var game = {
         space: false
     },
     //Holds all the information about the asteroids
-    asteroids: [],
-    timeTillNextAsteroid: 0,
-    asteroidsSpawned: 0
+    asteroids: []
 }
 
 //general change of things before every render
@@ -94,8 +92,6 @@ game.tick = function(){
                     //Detect if bullet is out of bounds
                     if(x > 640 || x < 0 || y > 480 || y < 0){
                         //Remove the bullet when out of screen
-                        debug("removed a bullet at index " + i + " and location " +
-                            x + " " + y);
                         game.player.bullets.splice(i, 1);
                     }
                 }
@@ -118,24 +114,10 @@ game.tick = function(){
                 game.player.sound.shoot.play();
             }
 
-            //Asteroid spawning
-            if(game.timeTillNextAsteroid <= 0){
-                //spawnAsteroid();
-                console.log("OMG");
-                game.worker.postMessage("spawnAsteroid");
-                //game.asteroidsSpawned++;
-                //if(game.asteroidsSpawned < 30){
-                    //game.timeTillNextAsteroid = (2/(game.asteroidsSpawned + 10)/10)*10000;
-                //}else{
-                    game.timeTillNextAsteroid = 50;
-                //}
-            }else{
-                game.timeTillNextAsteroid--;
-            }
-
             //What good are asteroids without movement, eh!
             if(game.asteroids.length > 0){
                 for(i = 0; i < game.asteroids.length; i++){
+
                     game.asteroids[i].x += game.asteroids[i].speed.x;
                     game.asteroids[i].y += game.asteroids[i].speed.y;
 
@@ -302,6 +284,8 @@ function init(){
     //Worker setup
     if(window.Worker){
         game.worker = new Worker("scripts/tickWorker.js");
+    }else{
+        window.alert("NO WEB WORKER SUPPORT!");
     }
 
     //player setup
@@ -311,10 +295,12 @@ function init(){
     /*
     game.sound = new Howl({
         src: ["sound/music.mp3"],
-        loop: true
+        loop: true,
+        volume: 0.25
     });
     game.sound.play();
     */
+
     game.sounds = {
         tutorial: new Howl({
             src: ["sound/tutorial.wav"]
@@ -336,6 +322,17 @@ function init(){
     });
 
     setTimeout(game.sounds.intro.play(), 1000);
+
+    //When we revieve a message from the worker, we want to handle it.
+    game.worker.onmessage = function (e) {
+        switch(e.data.name){
+            case SPAWN_ASTEROID_MSGID:
+                game.asteroids.push(e.data.data);
+                break;
+        }
+    }
+
+    game.worker.postMessage(START_WORKER_LOOP_MSGID);
 }
 
 //stops the game loop

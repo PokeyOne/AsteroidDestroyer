@@ -9,8 +9,6 @@ function spawnAsteroid(isWorker) {
         lifeTime: 0
     }
 
-    debug("Spawning asteroid");
-
     if(isWorker){
         return asteroid;
     }else{
