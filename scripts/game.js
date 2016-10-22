@@ -44,12 +44,12 @@ game.tick = function(){
             //Subracts from alpha when fading in, and adds to alpha when fading
             //out. Then switches either to fading out or to the game state.
             if(game.logoInfo.fadingOut == false){
-                game.logoInfo.alpha -= 0.005;
+                game.logoInfo.alpha -= 0.0005 * FRAME_GAP;
                 if(game.logoInfo.alpha <= 0){
                     game.logoInfo.fadingOut = true;
                 }
             }else{
-                game.logoInfo.alpha += 0.005;
+                game.logoInfo.alpha += 0.0005 * FRAME_GAP;
                 if(game.logoInfo.alpha >= 1){
                     if(game.logoInfo.currentState == 1){
                         game.currentState = GAME_STATE_ID;
@@ -63,7 +63,7 @@ game.tick = function(){
         case GAME_STATE_ID:
             //Spin clock-wise when right key is pressed
             if(game.keyDown.right){
-                game.player.rotation += 0.04;
+                game.player.rotation += 0.004 * FRAME_GAP;
                 if(game.player.rotation > 6.28319){
                     game.player.rotation = 0;
                 }
@@ -71,7 +71,7 @@ game.tick = function(){
 
             //Spin counter clock-wise when left key pressed
             if(game.keyDown.left){
-                game.player.rotation -= 0.04;
+                game.player.rotation -= 0.004 * FRAME_GAP;
                 if(game.player.rotation < 0){
                     game.player.rotation = 6.28319;
                 }
@@ -110,11 +110,12 @@ game.tick = function(){
                 }
 
                 game.player.bullets.push(bulletData);
-                game.player.shotCooldown = 50;
+                game.player.shotCooldown = SHOT_COOLDOWN;
                 game.player.sound.shoot.play();
             }
 
             //What good are asteroids without movement, eh!
+            console.log("There are " + game.asteroids.length + " asteroids");
             if(game.asteroids.length > 0){
                 for(i = 0; i < game.asteroids.length; i++){
 
@@ -129,14 +130,14 @@ game.tick = function(){
         		    var y = game.asteroids[i].y;
 
                     //Make sure there ain't no run away's, eh
-        		    if(game.asteroids[i].lifeTime > 200 && offScreen(x, y)){
+        		    if(game.asteroids[i].lifeTime > ASTEROID_LIFETIME && offScreen(x, y)){
                         game.asteroids.splice(i, 1);
                     }
                 }
             }
             break;
         default:
-            debug("Invalid state"); //if the currentState is unhandled
+            console.log("Invalid state"); //if the currentState is unhandled
     }
 }
 
@@ -196,6 +197,21 @@ game.render = function(){
                 game.ctx.restore(); //Just bringing it back to normal
             }
 
+            //Render asteroids
+            for(i = 0; i < game.asteroids.length; i++){
+                game.ctx.save();
+
+                var astro = game.asteroids[i];
+
+                game.ctx.translate(astro.x, astro.y);
+                game.ctx.rotate(astro.rad);
+
+                game.ctx.strokeStyle = "#FE38AB";
+                game.ctx.strokeRect(0 - astro.size/2, 0 - astro.size/2, astro.size, astro.size);
+
+                game.ctx.restore();
+            }
+
             //Render Debug
             renderGameDebug(game.ctx, game.player);
 
@@ -207,7 +223,7 @@ game.render = function(){
             game.ctx.strokeStyle = "#FFFFFF"; //white
             game.ctx.fillStyle = "#FF660A"; //redish-orange
             game.ctx.strokeRect(9, 9, 52, 22); //Border of bar
-            game.ctx.fillRect(10, 10, game.player.shotCooldown, 20); //middle of bar
+            game.ctx.fillRect(10, 10, game.player.shotCooldown/SHOT_COOLDOWN*50, 20); //middle of bar
             break;
         default:
             console.log("Invalid state");
@@ -278,8 +294,8 @@ function init(){
     //game setup
     game.canvas = document.getElementById("gameCanvas"); //Get the canvas object
     game.ctx = game.canvas.getContext("2d"); //Get the drawing context of canvas
-    game.loop = setInterval(game.tick, 10); //Start main game loop
-    game.renderLoop = setInterval(game.render, 10); //Start main render loop
+    game.loop = setInterval(game.tick, FRAME_GAP); //Start main game loop
+    game.renderLoop = setInterval(game.render, FRAME_GAP); //Start main render loop
 
     //Worker setup
     if(window.Worker){

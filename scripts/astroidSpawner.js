@@ -1,11 +1,11 @@
 function spawnAsteroid(isWorker) {
     var angle = randomRadian();
     var asteroid = {
-        x: dirSpd(angle, 3).x * -1000,
-        y: dirSpd(angle, 3).y * -1000,
-        speed: dirSpd(angle, 3),
+        x: dirSpd(angle, ASTEROID_SPEED).x * -1000,
+        y: dirSpd(angle, ASTEROID_SPEED).y * -1000,
+        speed: dirSpd(angle, ASTEROID_SPEED),
         rad: angle,
-        size: Math.random() * 50,
+        size: Math.random() * 50 + 10,
         lifeTime: 0
     }
 
